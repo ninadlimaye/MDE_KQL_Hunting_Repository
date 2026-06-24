@@ -1,0 +1,17 @@
+// Title: Rare Parent-Child Process Relationships
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Hunting Utility
+// Technique: N/A
+// Severity: Low
+// Description: Baseline query for uncommon parent-child process pairs.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(14d)
+| summarize Count=count(), Devices=dcount(DeviceName)
+  by InitiatingProcessFileName, FileName
+| where Count < 5 and Devices <= 2
+| order by Count asc

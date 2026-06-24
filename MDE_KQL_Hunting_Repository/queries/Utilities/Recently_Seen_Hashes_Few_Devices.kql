@@ -1,0 +1,22 @@
+// Title: Recently Seen Hashes Across Few Devices
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Hunting Utility
+// Technique: N/A
+// Severity: Low
+// Description: Finds uncommon SHA256 values across a small number of devices.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where isnotempty(SHA256)
+| summarize FirstSeen=min(Timestamp),
+            LastSeen=max(Timestamp),
+            Devices=dcount(DeviceName),
+            Users=dcount(InitiatingProcessAccountName),
+            Examples=make_set(ProcessCommandLine, 5)
+  by SHA256, FileName
+| where Devices <= 3
+| order by FirstSeen desc

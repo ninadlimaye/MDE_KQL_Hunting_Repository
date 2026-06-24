@@ -1,0 +1,17 @@
+// Title: Remote WMI Process Creation
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Lateral Movement
+// Technique: T1047 - WMI
+// Severity: High
+// Description: Detects WMI command execution patterns.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("wmic.exe", "powershell.exe", "pwsh.exe")
+| where ProcessCommandLine has_any ("process call create", "Invoke-WmiMethod", "Win32_Process", "wmiexec")
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, ProcessCommandLine, InitiatingProcessFileName

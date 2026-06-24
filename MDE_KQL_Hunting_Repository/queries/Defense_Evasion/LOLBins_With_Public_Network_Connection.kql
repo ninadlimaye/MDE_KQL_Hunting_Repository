@@ -1,0 +1,22 @@
+// Title: LOLBins with Public Network Connection
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Defense Evasion / Command and Control
+// Technique: T1218 / T1105
+// Severity: Medium
+// Description: Detects LOLBins making public network connections.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceNetworkEvents
+| where Timestamp > ago(7d)
+| where InitiatingProcessFileName in~ (
+    "rundll32.exe", "regsvr32.exe", "mshta.exe", "certutil.exe",
+    "bitsadmin.exe", "wmic.exe", "powershell.exe", "wscript.exe", "cscript.exe"
+)
+| where RemoteIPType == "Public"
+| where RemoteUrl !endswith ".microsoft.com"
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          InitiatingProcessFileName, InitiatingProcessCommandLine,
+          RemoteIP, RemoteUrl, RemotePort

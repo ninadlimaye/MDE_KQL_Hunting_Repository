@@ -1,0 +1,22 @@
+// Title: System Discovery Commands
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Discovery
+// Technique: T1082 - System Information Discovery
+// Severity: Low
+// Description: Detects common system and domain discovery commands.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("whoami.exe", "hostname.exe", "systeminfo.exe", "ipconfig.exe", "nltest.exe", "net.exe", "net1.exe")
+| where ProcessCommandLine has_any (
+    "whoami", "hostname", "systeminfo", "ipconfig",
+    "nltest", "group", "user", "domain", "view", "localgroup"
+)
+| summarize Count=count(), Commands=make_set(ProcessCommandLine, 20)
+  by DeviceName, InitiatingProcessAccountName, bin(Timestamp, 1h)
+| where Count >= 5
+| order by Timestamp desc

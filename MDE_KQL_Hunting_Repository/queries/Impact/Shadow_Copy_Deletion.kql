@@ -1,0 +1,19 @@
+// Title: Shadow Copy Deletion
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Impact / Defense Evasion
+// Technique: T1490 - Inhibit System Recovery
+// Severity: Critical
+// Description: Detects deletion of backups and shadow copies.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where ProcessCommandLine has_any (
+    "vssadmin delete shadows", "wmic shadowcopy delete",
+    "wbadmin delete", "bcdedit /set", "recoveryenabled no"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, ProcessCommandLine, InitiatingProcessFileName

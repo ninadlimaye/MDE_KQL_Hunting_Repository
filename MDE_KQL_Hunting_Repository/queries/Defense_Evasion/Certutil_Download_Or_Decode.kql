@@ -1,0 +1,20 @@
+// Title: Certutil Download or Decode Activity
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Defense Evasion / Command and Control
+// Technique: T1105 / T1140
+// Severity: High
+// Description: Detects certutil download, encode, or decode usage.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName =~ "certutil.exe"
+| where ProcessCommandLine has_any (
+    "-urlcache", "-split", "-f", "http",
+    "decode", "decodehex", "encode"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          ProcessCommandLine, InitiatingProcessFileName

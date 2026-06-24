@@ -1,0 +1,17 @@
+// Title: Unsigned Binary Execution from User-Writable Path
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Hunting Utility
+// Technique: N/A
+// Severity: Medium
+// Description: Finds unsigned binaries launched from common user-writable directories.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FolderPath has_any ("\Users\", "\ProgramData\", "\Temp\", "\AppData\")
+| where SignatureStatus != "Signed"
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, FolderPath, ProcessCommandLine, SHA256, SignatureStatus

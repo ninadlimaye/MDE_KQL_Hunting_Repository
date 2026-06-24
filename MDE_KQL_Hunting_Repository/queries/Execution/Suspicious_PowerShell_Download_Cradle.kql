@@ -1,0 +1,22 @@
+// Title: Suspicious PowerShell Download Cradle
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Execution
+// Technique: T1059.001 - PowerShell
+// Severity: High
+// Description: Detects PowerShell download and encoded command patterns.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("powershell.exe", "pwsh.exe")
+| where ProcessCommandLine has_any (
+    "DownloadString", "DownloadFile", "WebClient",
+    "Invoke-WebRequest", "iwr ", "curl ", "wget ",
+    "FromBase64String", "-enc", "-encodedcommand"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, ProcessCommandLine, InitiatingProcessFileName,
+          InitiatingProcessCommandLine, SHA256

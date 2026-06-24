@@ -1,0 +1,21 @@
+// Title: Startup Folder File Creation
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Persistence
+// Technique: T1547.001 - Startup Folder
+// Severity: Medium
+// Description: Detects files created or modified in Windows Startup folders.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceFileEvents
+| where Timestamp > ago(7d)
+| where FolderPath has_any (
+    @"\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup",
+    @"\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+)
+| where ActionType in~ ("FileCreated", "FileModified", "FileRenamed")
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, FolderPath, SHA256, InitiatingProcessFileName,
+          InitiatingProcessCommandLine

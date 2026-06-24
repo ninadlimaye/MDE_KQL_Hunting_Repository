@@ -1,0 +1,20 @@
+// Title: Potential DNS over HTTPS Process Activity
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Command and Control
+// Technique: T1572 / T1071
+// Severity: Medium
+// Description: Detects endpoint processes contacting known DoH endpoints.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceNetworkEvents
+| where Timestamp > ago(7d)
+| where RemoteUrl has_any (
+    "dns.google", "cloudflare-dns.com", "mozilla.cloudflare-dns.com",
+    "dns.quad9.net", "dns.nextdns.io"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          InitiatingProcessFileName, InitiatingProcessCommandLine,
+          RemoteUrl, RemoteIP, RemotePort

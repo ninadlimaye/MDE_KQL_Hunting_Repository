@@ -1,0 +1,17 @@
+// Title: PsExec Indicators
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Lateral Movement
+// Technique: T1021.002 / T1569.002
+// Severity: High
+// Description: Detects PsExec-like service and process activity.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("psexec.exe", "psexesvc.exe", "paexec.exe")
+   or ProcessCommandLine has_any ("psexesvc", "\\admin$", "\\c$")
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, ProcessCommandLine, InitiatingProcessFileName

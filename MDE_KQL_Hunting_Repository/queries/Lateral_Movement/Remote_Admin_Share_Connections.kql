@@ -1,0 +1,18 @@
+// Title: Remote Admin Share Connections
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Lateral Movement
+// Technique: T1021.002 - SMB/Windows Admin Shares
+// Severity: Medium
+// Description: Detects use of admin shares from endpoint telemetry.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceNetworkEvents
+| where Timestamp > ago(7d)
+| where RemotePort == 445
+| where InitiatingProcessCommandLine has_any ("\\admin$", "\\c$", "\\ipc$")
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          InitiatingProcessFileName, InitiatingProcessCommandLine,
+          RemoteIP, RemoteUrl, RemotePort

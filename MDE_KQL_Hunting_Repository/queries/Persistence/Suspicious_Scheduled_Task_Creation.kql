@@ -1,0 +1,21 @@
+// Title: Suspicious Scheduled Task Creation
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Persistence
+// Technique: T1053.005 - Scheduled Task
+// Severity: High
+// Description: Detects scheduled task creation launching interpreters or LOLBins.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName =~ "schtasks.exe"
+| where ProcessCommandLine has_any ("/create", "/sc", "/tn", "/tr")
+| where ProcessCommandLine has_any (
+    "powershell", "cmd.exe", "wscript", "cscript", "mshta",
+    "rundll32", "regsvr32", "http"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          ProcessCommandLine, InitiatingProcessFileName

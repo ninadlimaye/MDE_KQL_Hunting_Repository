@@ -1,0 +1,20 @@
+// Title: New Service Created by Suspicious Process
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Persistence / Privilege Escalation
+// Technique: T1543.003 - Windows Service
+// Severity: High
+// Description: Detects service creation from suspicious parent processes.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceEvents
+| where Timestamp > ago(7d)
+| where ActionType has_any ("ServiceInstalled", "ServiceCreated")
+| where InitiatingProcessFileName in~ (
+    "cmd.exe", "powershell.exe", "pwsh.exe", "wmic.exe", "sc.exe", "psexesvc.exe"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          ActionType, AdditionalFields, InitiatingProcessFileName,
+          InitiatingProcessCommandLine

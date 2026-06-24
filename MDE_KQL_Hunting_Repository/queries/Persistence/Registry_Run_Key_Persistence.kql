@@ -1,0 +1,21 @@
+// Title: Registry Run Key Persistence
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Persistence
+// Technique: T1060 / T1547.001
+// Severity: High
+// Description: Detects autorun registry key modification.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceRegistryEvents
+| where Timestamp > ago(7d)
+| where RegistryKey has_any (
+    @"\Software\Microsoft\Windows\CurrentVersion\Run",
+    @"\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+)
+| where ActionType in~ ("RegistryValueSet", "RegistryKeyCreated")
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          RegistryKey, RegistryValueName, RegistryValueData,
+          InitiatingProcessFileName, InitiatingProcessCommandLine

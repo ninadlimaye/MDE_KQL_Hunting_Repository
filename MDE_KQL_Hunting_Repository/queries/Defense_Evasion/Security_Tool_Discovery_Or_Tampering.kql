@@ -1,0 +1,19 @@
+// Title: Security Tool Discovery or Tampering
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Defense Evasion
+// Technique: T1562.001
+// Severity: High
+// Description: Detects attempts to query or modify security tooling.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where ProcessCommandLine has_any (
+    "Set-MpPreference", "DisableRealtimeMonitoring", "Add-MpPreference",
+    "sc stop", "net stop", "taskkill", "MsMpEng.exe", "Sense"
+)
+| project Timestamp, DeviceName, InitiatingProcessAccountName,
+          FileName, ProcessCommandLine, InitiatingProcessFileName

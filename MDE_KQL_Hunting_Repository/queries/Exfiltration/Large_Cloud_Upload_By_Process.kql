@@ -1,0 +1,24 @@
+// Title: Large Cloud Upload by Process
+// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
+// Language: KQL
+// Tactic: Exfiltration
+// Technique: T1567 - Exfiltration Over Web Service
+// Severity: Medium
+// Description: Looks for endpoint processes connecting to common cloud storage providers.
+// Author: Ninad Limaye / Generated starter content
+// Last Updated: 2026-06-24
+// Notes: Tune allowlists and thresholds for your environment before production use.
+
+DeviceNetworkEvents
+| where Timestamp > ago(7d)
+| where RemoteUrl has_any (
+    "dropbox.com", "drive.google.com", "onedrive.live.com",
+    "box.com", "mega.nz", "wetransfer.com"
+)
+| summarize Connections=count(),
+            FirstSeen=min(Timestamp),
+            LastSeen=max(Timestamp),
+            Processes=make_set(InitiatingProcessCommandLine, 10)
+  by DeviceName, InitiatingProcessAccountName, RemoteUrl
+| where Connections >= 5
+| order by Connections desc
