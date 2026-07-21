@@ -1,13 +1,7 @@
-// Title: Potential C2 Beaconing by Time Bucket
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Command and Control
 // Technique: T1071
 // Severity: Medium
 // Description: Identifies repetitive outbound connections to the same destination.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceNetworkEvents
 | where Timestamp > ago(24h)
