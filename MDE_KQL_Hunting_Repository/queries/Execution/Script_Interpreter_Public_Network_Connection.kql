@@ -1,13 +1,7 @@
-// Title: Script Interpreter Public Network Connection
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Execution / Command and Control
 // Technique: T1059 / T1105
 // Severity: Medium
 // Description: Finds script interpreters making public network connections.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceNetworkEvents
 | where Timestamp > ago(7d)
