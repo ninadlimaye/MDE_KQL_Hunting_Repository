@@ -1,13 +1,7 @@
-// Title: Suspicious HTA Execution
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Execution
 // Technique: T1218.005 - Mshta
 // Severity: Medium
 // Description: Detects mshta usage with script content, URLs, or HTA files.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceProcessEvents
 | where Timestamp > ago(7d)
