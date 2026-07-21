@@ -1,13 +1,7 @@
-// Title: Ransomware-Like File Rename Burst
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Impact
 // Technique: T1486 - Data Encrypted for Impact
 // Severity: Critical
 // Description: Detects high-volume file rename activity.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceFileEvents
 | where Timestamp > ago(24h)
