@@ -1,13 +1,7 @@
-// Title: Archive Then Execution from Downloads
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Initial Access / Execution
 // Technique: T1204 / T1059
 // Severity: Medium
 // Description: Finds execution from Downloads soon after archive activity.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 let ArchiveEvents =
 DeviceFileEvents
