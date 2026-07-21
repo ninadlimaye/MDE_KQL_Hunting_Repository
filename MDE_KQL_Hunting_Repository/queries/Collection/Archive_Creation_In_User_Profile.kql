@@ -1,13 +1,7 @@
-// Title: Archive Creation in User Profile
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Collection
 // Technique: T1560 - Archive Collected Data
 // Severity: Medium
 // Description: Detects archive creation from user profile paths.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceFileEvents
 | where Timestamp > ago(7d)
