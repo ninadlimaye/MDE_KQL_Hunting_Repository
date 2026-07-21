@@ -1,13 +1,7 @@
-// Title: Possible LSASS Credential Dumping
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Credential Access
 // Technique: T1003.001 - LSASS Memory
 // Severity: Critical
 // Description: Detects common LSASS dump command-line artifacts.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceProcessEvents
 | where Timestamp > ago(7d)
