@@ -1,13 +1,7 @@
-// Title: Suspicious Rundll32 Execution
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Defense Evasion
 // Technique: T1218.011 - Rundll32
 // Severity: Medium
 // Description: Detects rundll32 patterns often used for proxy execution.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceProcessEvents
 | where Timestamp > ago(7d)
