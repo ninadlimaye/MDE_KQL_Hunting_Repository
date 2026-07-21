@@ -1,13 +1,6 @@
-// Title: Rare Public Domain Connections
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
-// Tactic: Command and Control
 // Technique: T1071
 // Severity: Medium
 // Description: Finds domains contacted by few devices.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceNetworkEvents
 | where Timestamp > ago(7d)
