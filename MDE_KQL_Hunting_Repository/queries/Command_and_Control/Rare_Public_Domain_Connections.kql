@@ -1,3 +1,4 @@
+// Tactic: Command and Control
 // Technique: T1071
 // Severity: Medium
 // Description: Finds domains contacted by few devices.
