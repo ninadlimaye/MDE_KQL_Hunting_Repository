@@ -1,13 +1,7 @@
-// Title: Active Directory Recon Tools and Commands
-// Platform: Microsoft Defender XDR / Microsoft Defender for Endpoint
-// Language: KQL
 // Tactic: Discovery
 // Technique: T1069 / T1087
 // Severity: Medium
 // Description: Detects common AD reconnaissance tools and command patterns.
-// Author: Ninad Limaye / Generated starter content
-// Last Updated: 2026-06-24
-// Notes: Tune allowlists and thresholds for your environment before production use.
 
 DeviceProcessEvents
 | where Timestamp > ago(7d)
